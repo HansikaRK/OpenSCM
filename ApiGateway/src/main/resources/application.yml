@@ -1,9 +1,9 @@
 spring:
   application:
-    name: product-service
+    name: api-gateway
 
 server:
-  port: 8084
+  port: 8080
 
 eureka:
   client:
