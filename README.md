@@ -23,62 +23,70 @@
 
 ## Project Overview
 
-**OpenSCM** is an enterprise-grade **Supply Chain Management System** designed using a **microservices architecture**. The backend consists of multiple Spring Boot microservices responsible for distinct domains such as authentication, product management, inventory, and order processing. The frontend is built with React and Vite, providing a responsive and user-friendly interface.
+**OpenSCM** is a simple **Supply Chain Management (SCM) project** built by us. It has a backend made with **Java Spring Boot** and a frontend made with **React**. The project lets users manage products, track inventory, and handle orders in a basic way.
 
-The system aims to provide seamless coordination between suppliers, warehouse staff, logistics personnel, and customers through role-based access and real-time inventory and order management.
+The main goal of OpenSCM is to help us **learn and experiment** with how an SCM system works. Users can browse products, check stock levels, create orders, and monitor order status. Admins can add or update products and manage users.
+
+This project introduces **basic concepts of web development and full-stack applications**, such as:
+
+- Building a backend with REST APIs
+- Connecting to a database to store and retrieve data
+- Creating a frontend with React to interact with the backend
+- Understanding roles and permissions for different users
+
+OpenSCM is simple and easy to understand, making it a good starting point for learning how supply chain systems work. In the future, it can be expanded with features like **shipment tracking, notifications, or payment integration**.
+
+It’s a **hands-on project** to practice connecting different parts of a system and seeing how they work together in a simple SCM setup.
 
 ---
 
 ## Architecture
 
-The system is split into independently deployable microservices, each focusing on a single business capability:
+The system is divided into **independently deployable microservices**, each handling a single part of the application:
 
 | Component         | Description                                 | Technology                  | Default Port |
 |-------------------|---------------------------------------------|-----------------------------|--------------|
-| API Gateway       | Entry point routing & load balancing         | Spring Cloud Gateway        | 8080         |
-| Auth Service      | User authentication & JWT token management  | Spring Boot, Spring Security| 8081         |
-| Product Service   | Manage product catalog & details             | Spring Boot, JPA            | 8082         |
-| Inventory Service | Track stock levels & inventory updates       | Spring Boot, JPA            | 8083         |
-| Order Service     | Handle order creation, updates, and tracking| Spring Boot, JPA            | 8084         |
-| Frontend          | React UI for users and admins                 | React, Vite                 | 7172 (dev)   |
+| Eureka Server      | Service registry for all microservices      | Spring Cloud Netflix Eureka | 8761         |
+| API Gateway       | Entry point for routing requests and load balancing | Spring Cloud Gateway        | 8080         |
+| Auth Service      | Handles user authentication and JWT token management | Spring Boot, Spring Security| 8081         |
+| Inventory Service | Tracks stock levels and updates inventory   | Spring Boot, JPA            | 8082         |
+| Order Service     | Manages order creation, updates, and tracking | Spring Boot, JPA           | 8083         |
+| Product Service   | Manages product catalog and product details | Spring Boot, JPA            | 8084         |
+| Frontend          | React UI for users and admins                | React, Vite                 | 7172 (dev)   |
 
-Each microservice uses its own PostgreSQL database schema to maintain loose coupling and service autonomy.
-
+Each microservice uses its **own PostgreSQL database** to keep the system simple and separate. This makes it easier to understand how each part works on its own.
 ---
 
 ## Features
 
-- Role-based access control (Customer, Supplier, Warehouse Staff, Logistics, Admin)  
-- User registration and JWT-secured login/logout  
-- Product catalog browsing, searching, and management  
-- Real-time inventory monitoring and automatic stock updates  
-- Full order lifecycle management from creation to delivery  
-- API Gateway for centralized routing, security, and load balancing  
-- Dockerized containers for consistent deployment environments  
-- React frontend with proxy setup for seamless backend integration  
+- Simple role-based access (Admin, Customer, Staff)  
+- User registration and login (basic authentication, optional JWT)  
+- Browse and manage products  
+- Track inventory and update stock  
+- Create and track orders  
+- React frontend for interacting with the backend  
+- Optional: Docker support for running services easily  
 
 ---
 
 ## Technologies Used
 
-- **Backend:** Spring Boot, Spring Cloud Gateway, Spring Security, JWT, Spring Data JPA, Lombok  
+- **Backend:** Spring Boot, Spring Data JPA  
 - **Frontend:** React, Vite, Axios  
 - **Database:** PostgreSQL  
-- **Containerization:** Docker, Docker Compose  
+- **Containerization (optional):** Docker, Docker Compose  
 - **Build Tools:** Maven  
-- **Testing:** JUnit, Mockito (recommended to implement)  
 
 ---
 
 ## System Actors and Roles
 
-| Role              | Description                                         | Capabilities                            |
-|-------------------|-----------------------------------------------------|----------------------------------------|
-| Customer          | End-users who place and track orders                 | Browse products, place orders, track status |
-| Supplier          | Manage product supply and update product info       | Add/update products, manage stock supply |
-| Warehouse Staff   | Handle inventory and stock updates                    | Monitor stock, update inventory counts |
-| Logistics Personnel| Manage shipments and delivery                         | Update shipment status, manage deliveries |
-| Admin             | System administrators                                | Manage users, roles, and overall system health |
+| Role        | Description                         | Capabilities |
+|------------|-------------------------------------|--------------|
+| Admin      | Manages the system                  | Add/update products, manage users, view all orders |
+| Customer   | Places orders                        | Browse products, create orders, check order status |
+| Staff      | Handles inventory and orders         | Update stock, confirm orders, mark orders as shipped |
+
 
 ---
 
@@ -94,17 +102,28 @@ Each microservice uses its own PostgreSQL database schema to maintain loose coup
 
 ### Running Locally without Docker
 
-1. **Setup PostgreSQL databases** for each microservice (e.g., `auth_db`, `product_db`, etc.).  
-2. Configure each microservice’s `application.properties` or `application.yml` with its database connection details.  
-3. Start backend microservices in separate terminals:
+1. **Set up PostgreSQL databases** for each microservice (e.g., `auth_db`, `inventory_db`, `order_db`, `product_db`).  
+2. Update each microservice’s `application.properties` or `application.yml` file with your database connection details.  
+3. Start backend services in separate terminals (order matters if you want to avoid errors — start Eureka first):
 
    ```bash
-   cd auth-service && ./mvnw spring-boot:run
-   cd product-service && ./mvnw spring-boot:run
-   cd inventory-service && ./mvnw spring-boot:run
-   cd order-service && ./mvnw spring-boot:run
-   cd api-gateway && ./mvnw spring-boot:run
-   ```
+   # Start Eureka Server (Service Registry)
+   cd ServiceRegistry && ./mvnw spring-boot:run
+
+   # Start API Gateway
+   cd ApiGateway && ./mvnw spring-boot:run
+
+   # Start Auth Service
+   cd AuthService && ./mvnw spring-boot:run
+
+   # Start Inventory Service
+   cd InventoryService && ./mvnw spring-boot:run
+
+   # Start Order Service
+   cd OrderService && ./mvnw spring-boot:run
+
+   # Start Product Service
+   cd ProductService && ./mvnw spring-boot:run
 
 4. Start frontend app:
 
@@ -131,41 +150,46 @@ Each microservice uses its own PostgreSQL database schema to maintain loose coup
 ## Folder Structure
 
 ```
-open-scm/
-├── api-gateway/
-│   ├── src/
-│   ├── Dockerfile
-│   ├── pom.xml
-│   └── ...
-├── auth-service/
-│   ├── src/
-│   ├── Dockerfile
-│   ├── pom.xml
-│   └── ...
-├── product-service/
-│   ├── src/
-│   ├── Dockerfile
-│   ├── pom.xml
-│   └── ...
-├── inventory-service/
-│   ├── src/
-│   ├── Dockerfile
-│   ├── pom.xml
-│   └── ...
-├── order-service/
-│   ├── src/
-│   ├── Dockerfile
-│   ├── pom.xml
-│   └── ...
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   ├── Dockerfile
-│   ├── package.json
-│   ├── vite.config.js
-│   └── ...
-├── docker-compose.yml
-└── README.md
+OpenSCM/
+├── ServiceRegistry/ # Service registry
+│ ├── src/
+│ ├── Dockerfile
+│ ├── pom.xml
+│ └── ...
+├── ApiGateway/ # Entry point for routing requests
+│ ├── src/
+│ ├── Dockerfile
+│ ├── pom.xml
+│ └── ...
+├── AuthService/ # User authentication and roles
+│ ├── src/
+│ ├── Dockerfile
+│ ├── pom.xml
+│ └── ...
+├── InventoryService/ # Inventory tracking
+│ ├── src/
+│ ├── Dockerfile
+│ ├── pom.xml
+│ └── ...
+├── OrderService/ # Order management
+│ ├── src/
+│ ├── Dockerfile
+│ ├── pom.xml
+│ └── ...
+├── ProductService/ # Product catalog
+│ ├── src/
+│ ├── Dockerfile
+│ ├── pom.xml
+│ └── ...
+├── frontend/ # React + Vite frontend
+│ ├── public/
+│ ├── src/
+│ ├── Dockerfile
+│ ├── package.json
+│ ├── vite.config.js
+│ └── ...
+├── docker-compose.yml # Optional Docker setup
+└── README.md # Project documentation
 ```
 
 ---
@@ -218,17 +242,11 @@ This separation ensures database independence and fault tolerance.
 
 ---
 
-## License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
----
-
 ## Contact
 
-Created and maintained by [Your Name]  
-Email: your.email@example.com  
-GitHub: [github.com/yourusername](https://github.com/yourusername)
+Created and maintained by Hansika Kularathne, Ushan Savindu  
+Email: hkularatne2002@gmail.com, ushansavindu666@gmail.com  
+GitHub: [HansikaRK](https://github.com/HansikaRK) , [UshanSavindu55](https://github.com/UshanSavindu55)
 
 ---
 
