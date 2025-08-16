@@ -2,13 +2,49 @@ spring:
   application:
     name: api-gateway
 
-server:
-  port: 8080
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
 
-eureka:
-  client:
-    service-url:
-#      defaultZone: http://service-registry:8761/eureka/
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
+      routes:
+        - id: auth-route
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+          filters:
+            - name: JwtAuthenticationFilter
+            - RewritePath=/auth/(?<segment>.*), /${segment}
+
+        - id: products-route
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/products/**
+          filters:
+            - name: JwtAuthenticationFilter
+            - RewritePath=/products/(?<segment>.*), /${segment}
+
+        - id: inventory-route
+          uri: lb://INVENTORY-SERVICE
+          predicates:
+            - Path=/inventory/**
+          filters:
+            - name: JwtAuthenticationFilter
+            - RewritePath=/inventory/(?<segment>.*), /${segment}
+
+        - id: orders-route
+          uri: lb://ORDERS-SERVICE
+          predicates:
+            - Path=/orders/**
+          filters:
+            - name: JwtAuthenticationFilter
+            - RewritePath=/orders/(?<segment>.*), /${segment}
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web.reactive.function.client: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
