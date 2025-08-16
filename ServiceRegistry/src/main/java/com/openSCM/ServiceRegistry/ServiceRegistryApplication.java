@@ -1,4 +1,4 @@
-package com.openSCM.ServiceRegistry;
+package com.openscm.serviceregistry;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
