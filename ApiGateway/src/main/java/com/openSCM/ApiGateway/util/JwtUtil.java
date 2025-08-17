@@ -2,16 +2,16 @@ package com.openscm.apigateway.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import lombok.experimental.UtilityClass;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
-@UtilityClass
+@Component
 public class JwtUtil {
 
-    // Secret key (for demo; in production use env variable or vault)
+    // Secret key (use env variable or Vault in production)
     private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     // Token validity in milliseconds (2 hours)
@@ -28,15 +28,14 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Validate token and return subject
-    public String validateToken(String token) {
+    // Validate token and return claims
+    public Claims validateToken(String token) {
         try {
-            Claims claims = Jwts.parserBuilder()
+            return Jwts.parserBuilder()
                     .setSigningKey(SECRET_KEY)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            return claims.getSubject();
         } catch (ExpiredJwtException e) {
             throw new JwtValidationException("JWT token expired", e);
         } catch (JwtException e) {
@@ -44,7 +43,7 @@ public class JwtUtil {
         }
     }
 
-    // Extract claims without validation
+    // Extract claims (without re-validation, if you already validated)
     public Claims extractClaims(String token) {
         try {
             return Jwts.parserBuilder()
@@ -62,7 +61,6 @@ public class JwtUtil {
         public JwtValidationException(String message) {
             super(message);
         }
-
         public JwtValidationException(String message, Throwable cause) {
             super(message, cause);
         }

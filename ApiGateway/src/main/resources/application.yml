@@ -1,46 +1,57 @@
 spring:
   application:
-    name: api-gateway
+    name: API-GATEWAY
 
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false
+              lower-case-service-id: true
+#
+#          routes:
+#            - id: auth-route
+#              uri: lb://AUTH-SERVICE
+#              predicates:
+#                - Path=/auth/**
+#              filters:
+#                - RewritePath=/auth/(?<segment>.*), /${segment}
+#
+#            - id: products-route
+#              uri: lb://PRODUCT-SERVICE
+#              predicates:
+#                - Path=/products/**
+#              filters:
+#                - RewritePath=/products/(?<segment>.*), /${segment}
+#
+#            - id: inventory-route
+#              uri: lb://INVENTORY-SERVICE
+#              predicates:
+#                - Path=/inventory/**
+#              filters:
+#                - RewritePath=/inventory/(?<segment>.*), /${segment}
+#
+#            - id: orders-route
+#              uri: lb://ORDERS-SERVICE
+#              predicates:
+#                - Path=/orders/**
+#              filters:
+#                - RewritePath=/orders/(?<segment>.*), /${segment}
 
-      routes:
-        - id: auth-route
-          uri: lb://AUTH-SERVICE
-          predicates:
-            - Path=/auth/**
-          filters:
-            - name: JwtAuthenticationFilter
-            - RewritePath=/auth/(?<segment>.*), /${segment}
+server:
+  port: 8080
 
-        - id: products-route
-          uri: lb://PRODUCT-SERVICE
-          predicates:
-            - Path=/products/**
-          filters:
-            - name: JwtAuthenticationFilter
-            - RewritePath=/products/(?<segment>.*), /${segment}
-
-        - id: inventory-route
-          uri: lb://INVENTORY-SERVICE
-          predicates:
-            - Path=/inventory/**
-          filters:
-            - name: JwtAuthenticationFilter
-            - RewritePath=/inventory/(?<segment>.*), /${segment}
-
-        - id: orders-route
-          uri: lb://ORDERS-SERVICE
-          predicates:
-            - Path=/orders/**
-          filters:
-            - name: JwtAuthenticationFilter
-            - RewritePath=/orders/(?<segment>.*), /${segment}
+eureka:
+  instance:
+    preferIpAddress: true
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
 
 logging:
   level:
