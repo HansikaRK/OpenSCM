@@ -12,9 +12,9 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.csrf().disable() // disable CSRF for simplicity
                 .authorizeExchange()
-                .pathMatchers("/auth/**").permitAll() // allow public access to auth endpoints
-                .anyExchange().authenticated();       // all other routes require authentication
-
+                .pathMatchers("/auth/**").permitAll()  // public
+                .pathMatchers("/orders/**", "/inventory/**", "/products/**").authenticated() // protected
+                .anyExchange().permitAll();  // unknown routes not blocked by security
         return http.build();
     }
 }

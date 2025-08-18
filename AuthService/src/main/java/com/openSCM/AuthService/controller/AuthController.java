@@ -1,79 +1,73 @@
 package com.openscm.authservice.controller;
 
+import com.openscm.authservice.dto.SignUpRequest;
+import com.openscm.authservice.dto.SignUpResponse;
+import com.openscm.authservice.service.AuthService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
+@RequestMapping("/auth")
+@RequiredArgsConstructor
+@Slf4j
 public class AuthController {
+    
+    private final AuthService authService;
+
+    @PostMapping("/signup")
+    public ResponseEntity<SignUpResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+        log.info("Received signup request for username: {}", signUpRequest.getUsername());
+        
+        SignUpResponse response = authService.registerUser(signUpRequest);
+        
+        log.info("User signup successful for username: {}", signUpRequest.getUsername());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
     @GetMapping("/test")
-    public ResponseEntity<Map<String, Object>> test() {
+    public ResponseEntity<Map<String, String>> test() {
         return ResponseEntity.ok(Map.of(
-            "service", "AuthService",
-            "message", "Auth service is working correctly",
-            "status", "UP",
-            "timestamp", System.currentTimeMillis(),
-            "note", "This request went through API Gateway!"
+                "message", "Auth service is up",
+                "note", "Request went through API Gateway",
+                "service", "AuthService",
+                "endpoint", "/auth/test"
         ));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, Object> loginRequest) {
-        String email = (String) loginRequest.get("email");
-        String password = (String) loginRequest.get("password");
+    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> loginRequest) {
+        String username = loginRequest.get("username");
+        log.info("Login attempt for username: {}", username);
         
-        // Simple mock authentication for testing
-        if ("admin@openscm.com".equals(email) && "password123".equals(password)) {
-            return ResponseEntity.ok(Map.of(
-                "success", true,
-                "message", "Login successful",
-                "token", "mock-jwt-token-" + System.currentTimeMillis(),
-                "user", Map.of(
-                    "id", 1,
-                    "email", email,
-                    "name", "Admin User"
-                ),
-                "gateway_route", "/auth/login -> AUTH-SERVICE"
-            ));
-        } else {
-            return ResponseEntity.status(401).body(Map.of(
-                "success", false,
-                "message", "Invalid credentials",
-                "gateway_route", "/auth/login -> AUTH-SERVICE"
-            ));
-        }
+        return ResponseEntity.ok(Map.of(
+                "message", "Login endpoint hit",
+                "token", "dummy-jwt-token",
+                "username", username != null ? username : "unknown"
+        ));
     }
 
     @GetMapping("/health")
-    public ResponseEntity<Map<String, Object>> health() {
+    public ResponseEntity<Map<String, String>> health() {
         return ResponseEntity.ok(Map.of(
-            "service", "AuthService",
-            "status", "UP",
-            "version", "1.0.0",
-            "timestamp", System.currentTimeMillis(),
-            "endpoints", Map.of(
-                "login", "POST /auth/login",
-                "test", "GET /auth/test",
-                "health", "GET /auth/health"
-            )
+                "status", "UP",
+                "service", "AuthService",
+                "endpoints", "GET /auth/test, POST /auth/login, POST /auth/signup, GET /auth/health, GET /auth/info"
         ));
     }
 
     @GetMapping("/info")
-    public ResponseEntity<Map<String, Object>> info() {
+    public ResponseEntity<Map<String, String>> info() {
         return ResponseEntity.ok(Map.of(
-            "service", "AuthService",
-            "description", "Authentication and Authorization Service",
-            "version", "1.0.0",
-            "gateway_integration", "Connected via API Gateway on /auth/** routes",
-            "available_endpoints", Map.of(
-                "health_check", "GET /auth/health",
-                "service_test", "GET /auth/test", 
-                "authentication", "POST /auth/login",
-                "service_info", "GET /auth/info"
-            )
+                "service", "AuthService",
+                "description", "Authentication service with user registration and login",
+                "version", "1.0.0",
+                "features", "User signup, authentication, password hashing, validation"
         ));
     }
 }

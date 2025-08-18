@@ -1,44 +1,14 @@
 spring:
   application:
     name: API-GATEWAY
-
   cloud:
     gateway:
       server:
         webflux:
           discovery:
             locator:
-              enabled: false
+              enabled: true   # or false
               lower-case-service-id: true
-#
-#          routes:
-#            - id: auth-route
-#              uri: lb://AUTH-SERVICE
-#              predicates:
-#                - Path=/auth/**
-#              filters:
-#                - RewritePath=/auth/(?<segment>.*), /${segment}
-#
-#            - id: products-route
-#              uri: lb://PRODUCT-SERVICE
-#              predicates:
-#                - Path=/products/**
-#              filters:
-#                - RewritePath=/products/(?<segment>.*), /${segment}
-#
-#            - id: inventory-route
-#              uri: lb://INVENTORY-SERVICE
-#              predicates:
-#                - Path=/inventory/**
-#              filters:
-#                - RewritePath=/inventory/(?<segment>.*), /${segment}
-#
-#            - id: orders-route
-#              uri: lb://ORDERS-SERVICE
-#              predicates:
-#                - Path=/orders/**
-#              filters:
-#                - RewritePath=/orders/(?<segment>.*), /${segment}
 
 server:
   port: 8080
@@ -46,12 +16,12 @@ server:
 eureka:
   instance:
     preferIpAddress: true
-    hostname: localhost
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
+
 
 logging:
   level:
