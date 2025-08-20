@@ -10,6 +10,8 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 
 server:
   port: 8081
@@ -17,7 +19,7 @@ server:
 jwt:
   private-key: classpath:keys/private_key.pem
   public-key: classpath:keys/public_key.pem
-  expiration: 7200000
+  expiration: 7200000 # 2 hours in milliseconds
 
 eureka:
   instance:

@@ -55,7 +55,7 @@ public class AuthService {
         user.setRole(User.Role.ROLE_CUSTOMER); // Fixed role for buyers
         user.setEnabled(true);
         
-        // Save user to database
+        // Save user
         User savedUser = userRepository.save(user);
         log.info("User registered successfully with ID: {}", savedUser.getId());
         
