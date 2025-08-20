@@ -1,15 +1,22 @@
 package com.openscm.authservice.service;
 
+import com.openscm.authservice.dto.LogInRequest;
+import com.openscm.authservice.dto.LogInResponse;
 import com.openscm.authservice.dto.SignUpRequest;
 import com.openscm.authservice.dto.SignUpResponse;
 import com.openscm.authservice.entity.User;
 import com.openscm.authservice.exception.UserAlreadyExistsException;
 import com.openscm.authservice.repository.UserRepository;
+import com.openscm.authservice.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 
 @Service
@@ -19,6 +26,7 @@ public class AuthService {
     
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
     
     @Transactional
     public SignUpResponse registerUser(SignUpRequest signUpRequest) {
@@ -60,6 +68,36 @@ public class AuthService {
                 .email(savedUser.getEmail())
                 .role(savedUser.getRole().name())
                 .registrationTime(savedUser.getCreatedAt())
+                .build();
+    }
+
+    public LogInResponse login(LogInRequest logInRequest){
+        String loginInput = logInRequest.getLoginInput();
+        String password = logInRequest.getPassword();
+
+        User user = userRepository.findByUsernameOrEmail(loginInput, loginInput)
+                .orElseThrow(() -> {
+                    log.warn("Login attempt failed: User does not exist");
+                    return new UsernameNotFoundException("User not found");
+                });
+
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            log.warn("Login attempt failed: Incorrect password for user {}", loginInput);
+            throw new BadCredentialsException("Incorrect password");
+        }
+
+        log.info("User {} logged in successfully", loginInput);
+
+        // Generate JWT token
+        String token = jwtUtil.generateToken(user.getUsername());
+
+        return LogInResponse.builder()
+                .success(true)
+                .message("Login successful")
+                .token(token)
+                .userId(user.getId())
+                .userName(user.getUsername())
+                .loginTime(LocalDateTime.now())
                 .build();
     }
 }
