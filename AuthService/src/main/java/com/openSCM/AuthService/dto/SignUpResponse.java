@@ -14,8 +14,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SignUpResponse {
     
-    private Boolean success;
-    private String message;
     private UUID userId;
     private String username;
     private String email;

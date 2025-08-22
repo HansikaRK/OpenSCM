@@ -1,7 +1,5 @@
 package com.openscm.apigateway.config;
 
-import com.openscm.apigateway.filter.JwtAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -9,13 +7,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class GatewayRouteConfig {
-
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    @Autowired
-    public GatewayRouteConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
 
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder){
@@ -29,22 +20,19 @@ public class GatewayRouteConfig {
                 // Protected Order routes
                 .route("order-service", r -> r.path("/orders/**")
                         .filters(f -> f
-                                .rewritePath("/orders/(?<segment>.*)", "/${segment}")
-                                .filter(jwtAuthenticationFilter))
-                        .uri("lb://ORDER-SERVICE"))
+                                .rewritePath("/orders/(?<segment>.*)", "/${segment}"))
+                                .uri("lb://ORDER-SERVICE"))
 
                 // Protected Inventory routes
                 .route("inventory-service", r -> r.path("/inventory/**")
                         .filters(f -> f
-                                .rewritePath("/inventory/(?<segment>.*)", "/${segment}")
-                                .filter(jwtAuthenticationFilter))
+                                .rewritePath("/inventory/(?<segment>.*)", "/${segment}"))
                         .uri("lb://INVENTORY-SERVICE"))
 
                 // Protected Product routes
                 .route("product-service", r -> r.path("/products/**")
                         .filters(f -> f
-                                .rewritePath("/products/(?<segment>.*)", "/${segment}")
-                                .filter(jwtAuthenticationFilter))
+                                .rewritePath("/products/(?<segment>.*)", "/${segment}"))
                         .uri("lb://PRODUCT-SERVICE"))
 
                 .build();

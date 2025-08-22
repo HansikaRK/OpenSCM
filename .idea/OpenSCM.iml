@@ -9,5 +9,32 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:6.2.9" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:6.2.9" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:6.2.9" level="project" />
+    <orderEntry type="library" name="Maven: io.jsonwebtoken:jjwt-api:0.11.5" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.validation:jakarta.validation-api:3.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.38" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:3.5.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-commons:4.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:3.5.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-jpa:3.5.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:6.5.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:6.2.9" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:6.5.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:6.5.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-config:6.5.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.annotation:javax.annotation-api:1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:6.2.9" level="project" />
+    <orderEntry type="library" name="Maven: com.nimbusds:nimbus-jose-jwt:9.37.3" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.annotation:jakarta.annotation-api:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.annotation:jakarta.annotation-api:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.annotation:jakarta.annotation-api:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.annotation:jakarta.annotation-api:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.annotation:jakarta.annotation-api:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate.orm:hibernate-core:6.6.22.Final" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.persistence:jakarta.persistence-api:3.1.0" level="project" />
+    <orderEntry type="library" name="Maven: io.jsonwebtoken:jjwt-api:0.12.7" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:2.0.17" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:3.5.2" level="project" />
   </component>
 </module>

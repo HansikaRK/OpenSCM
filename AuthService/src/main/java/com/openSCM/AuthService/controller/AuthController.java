@@ -1,7 +1,6 @@
 package com.openscm.authservice.controller;
 
-import com.openscm.authservice.dto.SignUpRequest;
-import com.openscm.authservice.dto.SignUpResponse;
+import com.openscm.authservice.dto.*;
 import com.openscm.authservice.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,61 +12,74 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
-    
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SignUpResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<ApiResponse<SignUpResponse>> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         log.info("Received signup request for username: {}", signUpRequest.getUsername());
         
         SignUpResponse response = authService.registerUser(signUpRequest);
+        ApiResponse<SignUpResponse> apiResponse = ApiResponse.success("User registered successfully", response);
         
         log.info("User signup successful for username: {}", signUpRequest.getUsername());
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<LogInResponse>> login(@Valid @RequestBody LogInRequest loginRequest) {
+        String loginInput = loginRequest.getLoginInput();
+        log.info("Login attempt for user: {}", loginInput);
+
+        LogInResponse response = authService.login(loginRequest);
+        ApiResponse<LogInResponse> apiResponse = ApiResponse.success("Login successful", response);
+        
+        return ResponseEntity.ok(apiResponse);
     }
 
     @GetMapping("/test")
-    public ResponseEntity<Map<String, String>> test() {
-        return ResponseEntity.ok(Map.of(
+    public ResponseEntity<ApiResponse<Map<String, String>>> test() {
+        log.info("Test endpoint accessed");
+        
+        Map<String, String> testData = Map.of(
                 "message", "Auth service is up",
                 "note", "Request went through API Gateway",
                 "service", "AuthService",
                 "endpoint", "/auth/test"
-        ));
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> loginRequest) {
-        String username = loginRequest.get("username");
-        log.info("Login attempt for username: {}", username);
+        );
         
-        return ResponseEntity.ok(Map.of(
-                "message", "Login endpoint hit",
-                "token", "dummy-jwt-token",
-                "username", username != null ? username : "unknown"
-        ));
+        ApiResponse<Map<String, String>> apiResponse = ApiResponse.success("Test endpoint working", testData);
+        return ResponseEntity.ok(apiResponse);
     }
 
     @GetMapping("/health")
-    public ResponseEntity<Map<String, String>> health() {
-        return ResponseEntity.ok(Map.of(
+    public ResponseEntity<ApiResponse<Map<String, String>>> health() {
+        log.info("Health check endpoint accessed");
+        
+        Map<String, String> healthData = Map.of(
                 "status", "UP",
                 "service", "AuthService",
                 "endpoints", "GET /auth/test, POST /auth/login, POST /auth/signup, GET /auth/health, GET /auth/info"
-        ));
+        );
+        
+        ApiResponse<Map<String, String>> apiResponse = ApiResponse.success("Service is healthy", healthData);
+        return ResponseEntity.ok(apiResponse);
     }
 
     @GetMapping("/info")
-    public ResponseEntity<Map<String, String>> info() {
-        return ResponseEntity.ok(Map.of(
+    public ResponseEntity<ApiResponse<Map<String, String>>> info() {
+        log.info("Info endpoint accessed");
+        
+        Map<String, String> infoData = Map.of(
                 "service", "AuthService",
                 "description", "Authentication service with user registration and login",
                 "version", "1.0.0",
                 "features", "User signup, authentication, password hashing, validation"
-        ));
+        );
+        
+        ApiResponse<Map<String, String>> apiResponse = ApiResponse.success("Service information retrieved", infoData);
+        return ResponseEntity.ok(apiResponse);
     }
 }

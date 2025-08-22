@@ -14,10 +14,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/hello", "/test", "/health", "/info", "/login", "/signup").permitAll() // public endpoints
+                        .requestMatchers("/hello", "/test", "/health", "/info", "/login", "/signup", "/.well-known/jwks.json").permitAll() // public endpoints
                         .requestMatchers("/**").permitAll() // allow fallback controller to handle unknown endpoints
                 )
-                .httpBasic(); // optional
+                .httpBasic(httpBasic -> httpBasic.disable());
         return http.build();
     }
     

@@ -1,14 +1,17 @@
 spring:
   application:
     name: API-GATEWAY
-  cloud:
-    gateway:
-      server:
-        webflux:
-          discovery:
-            locator:
-              enabled: true   # or false
-              lower-case-service-id: true
+  spring:
+    cloud:
+      gateway:
+        server:
+          webflux:
+            discovery:
+              locator:
+                enabled: true
+                lower-case-service-id: true
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 
 server:
   port: 8080
