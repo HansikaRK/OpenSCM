@@ -92,12 +92,4 @@ public class JwtUtil {
         return username.equals(extractUsername(token)) && !isTokenExpired(token);
     }
 
-    // Getter methods for other components that need access to the keys
-    public PrivateKey getPrivateKey() {
-        return privateKey;
-    }
-
-    public PublicKey getPublicKey() {
-        return publicKey;
-    }
 }

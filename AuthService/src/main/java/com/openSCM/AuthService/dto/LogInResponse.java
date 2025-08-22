@@ -13,9 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LogInResponse {
-
-    private Boolean success;
-    private String message;
+    
     private String token;
     private UUID userId;
     private String userName;

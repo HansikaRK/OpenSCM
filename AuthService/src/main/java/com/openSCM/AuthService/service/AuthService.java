@@ -10,8 +10,6 @@ import com.openscm.authservice.repository.UserRepository;
 import com.openscm.authservice.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +50,7 @@ public class AuthService {
         user.setFirstName(signUpRequest.getFirstName());
         user.setLastName(signUpRequest.getLastName());
         user.setPhoneNumber(signUpRequest.getPhoneNumber());
-        user.setRole(User.Role.ROLE_CUSTOMER); // Fixed role for buyers
+        user.setRole(User.Role.ROLE_CUSTOMER); // Fixed role for customers
         user.setEnabled(true);
         
         // Save user
@@ -61,8 +59,6 @@ public class AuthService {
         
         // Return success response
         return SignUpResponse.builder()
-                .success(true)
-                .message("User registered successfully")
                 .userId(savedUser.getId())
                 .username(savedUser.getUsername())
                 .email(savedUser.getEmail())
@@ -78,12 +74,12 @@ public class AuthService {
         User user = userRepository.findByUsernameOrEmail(loginInput, loginInput)
                 .orElseThrow(() -> {
                     log.warn("Login attempt failed: User does not exist");
-                    return new UsernameNotFoundException("User not found");
+                    return new com.openscm.authservice.exception.UsernameNotFoundException("User not found");
                 });
 
         if(!passwordEncoder.matches(password, user.getPassword())){
             log.warn("Login attempt failed: Incorrect password for user {}", loginInput);
-            throw new BadCredentialsException("Incorrect password");
+            throw new IllegalArgumentException("Incorrect password");
         }
 
         log.info("User {} logged in successfully", loginInput);
@@ -92,8 +88,6 @@ public class AuthService {
         String token = jwtUtil.generateToken(user.getUsername());
 
         return LogInResponse.builder()
-                .success(true)
-                .message("Login successful")
                 .token(token)
                 .userId(user.getId())
                 .userName(user.getUsername())
