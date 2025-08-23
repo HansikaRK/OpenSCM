@@ -31,7 +31,7 @@ public class JwksController {
 
         X509EncodedKeySpec spec = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyContent));
         RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(spec);
-
+        System.out.println("Public key is getting accessed !");
         rsaJwk = new RSAKey.Builder(publicKey)
                 .keyID("authservice-keys")
                 .build();
