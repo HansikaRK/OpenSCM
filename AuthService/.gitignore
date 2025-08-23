@@ -33,4 +33,4 @@ build/
 .vscode/
 
 # Ignore private keys
-src/main/resources/keys/
+src/main/resources/keys/private_key.pem
