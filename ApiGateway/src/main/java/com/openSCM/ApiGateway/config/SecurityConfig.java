@@ -33,8 +33,9 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ReactiveJwtDecoder jwtDecoder) {
         http.csrf(csrf -> csrf.disable()) // disable CSRF for stateless APIs
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/auth/**").permitAll() // public endpoints (login, register, etc.)
+                        .pathMatchers("/auth/login", "/auth/signup", "/auth/info").permitAll() // public endpoints (login, register, etc.
                         .pathMatchers("/actuator/**").permitAll() // actuator endpoints
+                        .pathMatchers("/auth/test-protected").authenticated() // protected testing endpoint
                         .pathMatchers("/orders/**", "/inventory/**", "/products/**").authenticated() // protected
                         .anyExchange().authenticated() // everything else also requires JWT
                 )

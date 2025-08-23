@@ -54,6 +54,21 @@ public class AuthController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @GetMapping("/test-protected")
+    public ResponseEntity<ApiResponse<Map<String, String>>> testProtected() {
+        log.info("Protected test endpoint accessed successfully");
+
+        Map<String, String> testData = Map.of(
+                "message", "The protected request reached the endpoint",
+                "note", "Request for the protected endpoint successful",
+                "service", "AuthService",
+                "endpoint", "/auth/test-protected"
+        );
+
+        ApiResponse<Map<String, String>> apiResponse = ApiResponse.success("Protected test endpoint working", testData);
+        return ResponseEntity.ok(apiResponse);
+    }
+
     @GetMapping("/health")
     public ResponseEntity<ApiResponse<Map<String, String>>> health() {
         log.info("Health check endpoint accessed");

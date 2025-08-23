@@ -56,7 +56,7 @@ public class AuthService {
         // Save user
         User savedUser = userRepository.save(user);
         log.info("User registered successfully with ID: {}", savedUser.getId());
-        
+
         // Return success response
         return SignUpResponse.builder()
                 .userId(savedUser.getId())
