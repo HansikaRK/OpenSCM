@@ -1,14 +1,14 @@
-# Using official Java 21 image
-FROM eclipse-temurin:21-jdk
+# Simple Java 21 setup
+FROM eclipse-temurin:21-jre
 
-# Setting the working directory
+# Set working directory
 WORKDIR /app
 
-# Copying the Maven/Gradle build output JAR to the container
-COPY target/*.jar app.jar
+# Copy the JAR file
+COPY target/ServiceRegistry-*.jar app.jar
 
-# Exposing the port this service runs on (change per service)
+# Expose port
 EXPOSE 8761
 
-# Running the application
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
