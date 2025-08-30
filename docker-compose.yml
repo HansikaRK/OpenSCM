@@ -1,58 +1,143 @@
+version: '3.8'
+
 services:
+  # Single PostgreSQL server with multiple databases
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres  # Default database
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"    # AMQP port
+      - "15672:15672"  # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped
+
+  # Service Registry (Eureka)
   service-registry:
     build: ./ServiceRegistry
     container_name: service-registry
     ports:
       - "8761:8761"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
+    restart: unless-stopped
 
+  # API Gateway
   api-gateway:
     build: ./ApiGateway
     container_name: api-gateway
     ports:
       - "8080:8080"
     depends_on:
-      service-registry:
-        condition: service_healthy
+      - service-registry
+      - rabbitmq
+    environment:
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-registry:8761/eureka
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    restart: unless-stopped
 
+  # Auth Service
   auth-service:
     build: ./AuthService
     container_name: auth-service
     ports:
       - "8081:8081"
     depends_on:
-      service-registry:
-        condition: service_healthy
+      - service-registry
+      - postgres
+      - rabbitmq
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/openscm_auth
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - DB_PASSWORD=postgres
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-registry:8761/eureka
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    restart: unless-stopped
 
+  # Inventory Service
   inventory-service:
     build: ./InventoryService
     container_name: inventory-service
     ports:
       - "8082:8082"
     depends_on:
-      service-registry:
-        condition: service_healthy
+      - service-registry
+      - postgres
+      - rabbitmq
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/openscm_inventory
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - DB_PASSWORD=postgres
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-registry:8761/eureka
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    restart: unless-stopped
 
+  # Order Service
   order-service:
     build: ./OrderService
     container_name: order-service
     ports:
       - "8083:8083"
     depends_on:
-      service-registry:
-        condition: service_healthy
+      - service-registry
+      - postgres
+      - rabbitmq
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/openscm_order
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - DB_PASSWORD=postgres
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-registry:8761/eureka
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    restart: unless-stopped
 
+  # Product Service
   product-service:
     build: ./ProductService
     container_name: product-service
     ports:
       - "8084:8084"
     depends_on:
-      service-registry:
-        condition: service_healthy
+      - service-registry
+      - postgres
+      - rabbitmq
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/openscm_product
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - DB_PASSWORD=postgres
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-registry:8761/eureka
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    restart: unless-stopped
 
+volumes:
+  postgres_data:
+  rabbitmq_data:
