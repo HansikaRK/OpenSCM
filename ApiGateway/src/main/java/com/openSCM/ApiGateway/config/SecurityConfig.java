@@ -12,7 +12,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
@@ -32,7 +31,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ReactiveJwtDecoder jwtDecoder) {
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, ReactiveJwtDecoder jwtDecoder) {
         http.csrf(csrf -> csrf.disable()) // disable CSRF for stateless APIs
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/auth/login", "/auth/signup", "/auth/info").permitAll() // public endpoints (login, register, etc.
