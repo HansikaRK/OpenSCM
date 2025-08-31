@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .pathMatchers("/auth/login", "/auth/signup", "/auth/info").permitAll() // public endpoints (login, register, etc.
                         .pathMatchers("/actuator/**").permitAll() // actuator endpoints
                         .pathMatchers("/auth/test-protected").authenticated() // protected testing endpoint
-                        .pathMatchers("/orders/**", "/inventory/**", "/products/**").authenticated() // protected
+                        .pathMatchers("/orders/**", "/inventory/**", "/suppliers/**").authenticated() // protected
                         .anyExchange().authenticated() // everything else also requires JWT
                 )
                 .httpBasic(httpBasic -> httpBasic.disable()) // disable HTTP Basic

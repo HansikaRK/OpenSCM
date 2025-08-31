@@ -29,11 +29,11 @@ public class GatewayRouteConfig {
                                 .rewritePath("/inventory/(?<segment>.*)", "/${segment}"))
                         .uri("lb://INVENTORY-SERVICE"))
 
-                // Protected Product routes
-                .route("product-service", r -> r.path("/products/**")
+                // Protected Supplier routes
+                .route("supplier-service", r -> r.path("/suppliers/**")
                         .filters(f -> f
-                                .rewritePath("/products/(?<segment>.*)", "/${segment}"))
-                        .uri("lb://PRODUCT-SERVICE"))
+                                .rewritePath("/suppliers/(?<segment>.*)", "/${segment}"))
+                        .uri("lb://SUPPLIER-SERVICE"))
 
                 .build();
     }
