@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.openSCM</groupId>
-	<artifactId>ProductService</artifactId>
+	<artifactId>SupplierService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ProductService</name>
-	<description>Product Service </description>
+	<name>SupplierService</name>
+	<description>Supplier Service</description>
 	<url/>
 	<licenses>
 		<license/>

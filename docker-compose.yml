@@ -145,10 +145,10 @@ services:
       - SPRING_RABBITMQ_PASSWORD=guest
     restart: unless-stopped
 
-  # Product Service
-  product-service:
-    build: ./ProductService
-    container_name: product-service
+  # Supplier Service
+  supplier-service:
+    build: ./SupplierService
+    container_name: supplier-service
     ports:
       - "8084:8084"
     depends_on:
@@ -159,7 +159,7 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/openscm_product
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/openscm_supplier
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - DB_PASSWORD=postgres

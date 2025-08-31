@@ -1,10 +1,10 @@
-package com.openSCM.ProductService;
+package com.openSCM.SupplierService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProductServiceApplicationTests {
+class SupplierServiceApplicationTests {
 
 	@Test
 	void contextLoads() {

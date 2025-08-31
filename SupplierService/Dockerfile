@@ -5,7 +5,7 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 
 # Copy the JAR file
-COPY target/ProductService-*.jar app.jar
+COPY target/SupplierService-*.jar app.jar
 
 # Expose port
 EXPOSE 8084

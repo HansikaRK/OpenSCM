@@ -1,4 +1,4 @@
-package com.openscm.productservice;
+package com.openscm.supplierservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,10 +10,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 //Remove the exlude part when the databases are used
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
-public class ProductServiceApplication {
+public class SupplierServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProductServiceApplication.class, args);
+		SpringApplication.run(SupplierServiceApplication.class, args);
 	}
 
 }
