@@ -55,5 +55,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.12.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.amqp:spring-rabbit:3.2.6" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.amqp:spring-amqp:3.2.6" level="project" />
   </component>
 </module>
