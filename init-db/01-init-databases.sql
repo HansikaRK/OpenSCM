@@ -9,4 +9,24 @@ CREATE DATABASE openscm_supplier;
 GRANT ALL PRIVILEGES ON DATABASE openscm_auth TO postgres;
 GRANT ALL PRIVILEGES ON DATABASE openscm_inventory TO postgres;
 GRANT ALL PRIVILEGES ON DATABASE openscm_order TO postgres;
-GRANT ALL PRIVILEGES ON DATABASE openscm_supplier TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE openscm_suppliers TO postgres;
+
+\connect openscm_suppliers;
+
+-- Create supplier_types table (without description)
+CREATE TABLE supplier_types (
+    id SERIAL PRIMARY KEY,
+    type_name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Insert common supplier types
+INSERT INTO supplier_types (type_name) VALUES
+('Manufacturer'),
+('Distributor'),
+('Wholesaler'),
+('Service Provider'),
+('Retailer'),
+('Raw Material Supplier'),
+('Importer / Exporter'),
+('Contract Manufacturer'),
+('Logistics / Freight');

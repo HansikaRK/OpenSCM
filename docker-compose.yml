@@ -148,7 +148,7 @@ services:
   # Supplier Service
   supplier-service:
     build: ./SupplierService
-    container_name: supplier-service
+    container_name: Supplier-service
     ports:
       - "8084:8084"
     depends_on:

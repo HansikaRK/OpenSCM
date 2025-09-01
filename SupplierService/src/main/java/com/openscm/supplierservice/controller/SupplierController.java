@@ -1,20 +1,35 @@
 package com.openscm.supplierservice.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.openscm.supplierservice.dto.ApiResponse;
+import com.openscm.supplierservice.dto.SupplierDTO;
+import com.openscm.supplierservice.dto.SupplierResponseDTO;
+import com.openscm.supplierservice.service.SupplierService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/supplier")
+@Slf4j
 public class SupplierController {
 
-    @GetMapping("/health")
-    public String health() {
-        return "Supplier Service is running!";
+    @Autowired
+    private SupplierService supplierService;
+
+    // Create a new supplier
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse<SupplierResponseDTO>> addSupplier(@RequestBody @Valid SupplierDTO supplierDTO) {
+        SupplierResponseDTO createdSupplier = supplierService.addSupplier(supplierDTO);
+
+        ApiResponse<SupplierResponseDTO> apiResponse = ApiResponse.success(
+                "Supplier created successfully",
+                createdSupplier
+        );
+
+        log.info("Supplier added successfully: {}", createdSupplier.getName());
+        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
-    @GetMapping("/products")
-    public String getProducts() {
-        return "Products endpoint - Implementation coming soon";
-    }
 }
