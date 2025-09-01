@@ -1,6 +1,5 @@
 package com.openscm.supplierservice.controller;
 
-import com.openscm.authservice.dto.SignUpResponse;
 import com.openscm.supplierservice.dto.ApiResponse;
 import com.openscm.supplierservice.dto.SupplierDTO;
 import com.openscm.supplierservice.dto.SupplierResponseDTO;
@@ -33,15 +32,4 @@ public class SupplierController {
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
-    // Optional: Get all suppliers
-    @GetMapping
-    public ResponseEntity<?> getAllSuppliers() {
-        return ResponseEntity.ok(supplierService.getAllSuppliers());
-    }
-
-    // Optional: Get supplier by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getSupplierById(@PathVariable Long id) {
-        return ResponseEntity.ok(supplierService.getSupplierById(id));
-    }
 }

@@ -94,4 +94,37 @@ public class AuthService {
                 .loginTime(LocalDateTime.now())
                 .build();
     }
+
+    @Transactional
+    public String createSupplierUser(String email, String name, String role) {
+        log.info("Creating supplier user for email: {}", email);
+        
+        // Check if user already exists
+        if (userRepository.existsByEmail(email)) {
+            log.warn("User with email {} already exists", email);
+            throw new UserAlreadyExistsException("User with this email already exists");
+        }
+        
+        // Generate a temporary password
+        String tempPassword = generateTempPassword();
+        
+        // Create new supplier user
+        User user = new User();
+        user.setUsername(email); // Use email as username for suppliers
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(tempPassword));
+        user.setFirstName(name);
+        user.setRole(User.Role.ROLE_SUPPLIER);
+        user.setEnabled(true);
+        
+        User savedUser = userRepository.save(user);
+        log.info("Supplier user created successfully with ID: {}", savedUser.getId());
+        
+        return tempPassword;
+    }
+    
+    private String generateTempPassword() {
+        // Generate a random 12-character password
+        return java.util.UUID.randomUUID().toString().substring(0, 12);
+    }
 }
