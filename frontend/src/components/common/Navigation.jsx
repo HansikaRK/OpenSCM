@@ -1,9 +1,11 @@
 import { Package } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import Button from './Button';
 
 export default function Navigation() {
   const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
 
   const handleLoginClick = () => {
     navigate('/login');
@@ -11,6 +13,15 @@ export default function Navigation() {
 
   const handleRegisterClick = () => {
     navigate('/register');
+  };
+
+  const handleDashboardClick = () => {
+    navigate('/dashboard');
+  };
+
+  const handleLogoutClick = () => {
+    logout();
+    navigate('/');
   };
 
   return (
@@ -27,20 +38,41 @@ export default function Navigation() {
           <a href="#about" className="hover:text-green-400 transition-colors">About</a>
           <a href="#contact" className="hover:text-green-400 transition-colors">Contact</a>
           <div className="flex items-center space-x-3">
-            <Button 
-              variant="secondary" 
-              size="sm" 
-              onClick={handleLoginClick}
-            >
-              Login
-            </Button>
-            <Button 
-              variant="primary" 
-              size="sm" 
-              onClick={handleRegisterClick}
-            >
-              Register
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  onClick={handleDashboardClick}
+                >
+                  Dashboard
+                </Button>
+                <Button 
+                  variant="primary" 
+                  size="sm" 
+                  onClick={handleLogoutClick}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  onClick={handleLoginClick}
+                >
+                  Login
+                </Button>
+                <Button 
+                  variant="primary" 
+                  size="sm" 
+                  onClick={handleRegisterClick}
+                >
+                  Register
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>

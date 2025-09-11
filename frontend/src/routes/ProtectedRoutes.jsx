@@ -1,9 +1,19 @@
 import { Routes, Route } from "react-router-dom";
+import Dashboard from "../pages/Dashboard";
+import ProtectedRoute from "../components/common/ProtectedRoute";
 
 const ProtectedRoutes = () => {
     return (
         <Routes>
-            {/* Protected routes will be added here when dashboard/authenticated pages are created */}
+            <Route 
+                path="/dashboard" 
+                element={
+                    <ProtectedRoute>
+                        <Dashboard />
+                    </ProtectedRoute>
+                } 
+            />
+            {/* Add more protected routes here as needed */}
         </Routes>
     );
 };
