@@ -7,6 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/AuthService/src/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/SupplierService/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SupplierService/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/SupplierService/target" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/node_modules" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

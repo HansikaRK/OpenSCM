@@ -34,3 +34,6 @@ build/
 
 # Ignore private keys
 src/main/resources/keys/private_key.pem
+
+# Local secrets
+application-local.yml
