@@ -9,6 +9,15 @@
         <outputRelativeToContentRoot value="true" />
         <module name="ServiceRegistry" />
       </profile>
+      <profile name="Annotation profile for AuthService" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+        </processorPath>
+        <module name="AuthService" />
+      </profile>
       <profile name="Annotation profile for OrderService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -20,7 +29,6 @@
         <module name="OrderService" />
         <module name="ApiGateway" />
         <module name="InventoryService" />
-        <module name="AuthService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
