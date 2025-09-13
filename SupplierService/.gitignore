@@ -32,4 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 
+# Local secrets and environment variables
+application-local.yml
 .env
+.env.local
+.env.production
+.env.development

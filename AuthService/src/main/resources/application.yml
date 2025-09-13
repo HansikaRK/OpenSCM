@@ -1,39 +1,39 @@
-spring:
-  application:
-    name: AUTH-SERVICE
+  spring:
+    application:
+      name: AUTH-SERVICE
 
-  profiles:
-    active: local
+    profiles:
+      active: local
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
+    jpa:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+        ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+          format_sql: true
 
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+    autoconfigure:
+      exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 
-server:
-  port: 8081
+  server:
+    port: 8081
 
-jwt:
-  private-key: classpath:keys/private_key.pem
-  public-key: classpath:keys/public_key.pem
-  expiration: 7200000 # 2 hours in milliseconds
+  jwt:
+    private-key: classpath:keys/private_key.pem
+    public-key: classpath:keys/public_key.pem
+    expiration: 7200000 # 2 hours in milliseconds
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-    eureka-server-read-timeout-ms: 10000
-    eureka-server-connect-timeout-ms: 10000
-    registry-fetch-interval-seconds: 10
+  eureka:
+    instance:
+      prefer-ip-address: true
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/
+      register-with-eureka: true
+      fetch-registry: true
+      eureka-server-read-timeout-ms: 10000
+      eureka-server-connect-timeout-ms: 10000
+      registry-fetch-interval-seconds: 10
 
