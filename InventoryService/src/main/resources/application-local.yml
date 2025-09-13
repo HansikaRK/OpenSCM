@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: INVENTORY-SERVICE
+
+  profiles:
+    active: local
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    # For local development - uncomment below and comment out Supabase
+    url: jdbc:postgresql://localhost:5432/openscm_inventory
+    username: postgres
+    password: admin123
+    
+    # For Supabase (production) - comment below for local development
+    # url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?currentSchema=openscm_inventory
+    # username: postgres.gvkxtnsrluywiqzgbums
+    # password: LctrKXaH7cSBzxrP
+    hikari:
+      schema: openscm_inventory
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 8083
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+    eureka-server-read-timeout-ms: 10000
+    eureka-server-connect-timeout-ms: 10000
+    registry-fetch-interval-seconds: 10
+
+logging:
+  level:
+    com.openscm.inventoryservice: DEBUG
+    org.springframework.amqp: DEBUG
