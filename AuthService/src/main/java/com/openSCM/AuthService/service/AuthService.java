@@ -4,8 +4,10 @@ import com.openscm.authservice.dto.LogInRequest;
 import com.openscm.authservice.dto.LogInResponse;
 import com.openscm.authservice.dto.SignUpRequest;
 import com.openscm.authservice.dto.SignUpResponse;
+import com.openscm.authservice.entity.Role;
 import com.openscm.authservice.entity.User;
 import com.openscm.authservice.exception.UserAlreadyExistsException;
+import com.openscm.authservice.repository.RoleRepository;
 import com.openscm.authservice.repository.UserRepository;
 import com.openscm.authservice.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,38 +23,40 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthService {
-    
+
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-    
+
     @Transactional
     public SignUpResponse registerUser(SignUpRequest signUpRequest) {
-        log.info("Starting user registration for username: {}", signUpRequest.getUsername());
-        
+        log.info("Starting customer registration for username: {}", signUpRequest.getUsername());
+
         // Check if username or email already exists (combined for security)
-        if (userRepository.existsByUsername(signUpRequest.getUsername()) || 
-            userRepository.existsByEmail(signUpRequest.getEmail())) {
-            log.warn("Registration failed: Username or email already exists for registration attempt");
+        if (userRepository.existsByUsername(signUpRequest.getUsername()) ||
+                userRepository.existsByEmail(signUpRequest.getEmail())) {
+            log.warn("Registration failed: Username or email already exists");
             throw new UserAlreadyExistsException("Username or email already exists");
         }
-        
+
         // Validating password confirmation
         if (!signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {
             throw new IllegalArgumentException("Passwords do not match");
         }
-        
+
+        Role customerRole = roleRepository.findByType("CUSTOMER")
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+
         // Creating new user entity
         User user = new User();
         user.setUsername(signUpRequest.getUsername());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-        user.setFirstName(signUpRequest.getFirstName());
-        user.setLastName(signUpRequest.getLastName());
-        user.setPhoneNumber(signUpRequest.getPhoneNumber());
-        user.setRole(User.Role.ROLE_CUSTOMER); // Fixed role for customers
-        user.setEnabled(true);
-        
+        user.setPhoneNumber(signUpRequest.getContactNumber());
+        user.setRole(customerRole);
+
         // Save user
         User savedUser = userRepository.save(user);
         log.info("User registered successfully with ID: {}", savedUser.getId());
@@ -62,7 +66,7 @@ public class AuthService {
                 .userId(savedUser.getId())
                 .username(savedUser.getUsername())
                 .email(savedUser.getEmail())
-                .role(savedUser.getRole().name())
+                .role(savedUser.getRole().getType())
                 .registrationTime(savedUser.getCreatedAt())
                 .build();
     }
@@ -93,38 +97,5 @@ public class AuthService {
                 .userName(user.getUsername())
                 .loginTime(LocalDateTime.now())
                 .build();
-    }
-
-    @Transactional
-    public String createSupplierUser(String email, String name, String role) {
-        log.info("Creating supplier user for email: {}", email);
-        
-        // Check if user already exists
-        if (userRepository.existsByEmail(email)) {
-            log.warn("User with email {} already exists", email);
-            throw new UserAlreadyExistsException("User with this email already exists");
-        }
-        
-        // Generate a temporary password
-        String tempPassword = generateTempPassword();
-        
-        // Create new supplier user
-        User user = new User();
-        user.setUsername(email); // Use email as username for suppliers
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(tempPassword));
-        user.setFirstName(name);
-        user.setRole(User.Role.ROLE_SUPPLIER);
-        user.setEnabled(true);
-        
-        User savedUser = userRepository.save(user);
-        log.info("Supplier user created successfully with ID: {}", savedUser.getId());
-        
-        return tempPassword;
-    }
-    
-    private String generateTempPassword() {
-        // Generate a random 12-character password
-        return java.util.UUID.randomUUID().toString().substring(0, 12);
     }
 }

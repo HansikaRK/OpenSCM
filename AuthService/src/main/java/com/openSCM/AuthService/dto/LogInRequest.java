@@ -11,4 +11,6 @@ public class LogInRequest {
 
     @NotBlank(message = "Enter the password")
     private String password;
+
+
 }
