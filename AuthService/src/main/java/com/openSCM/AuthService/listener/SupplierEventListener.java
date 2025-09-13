@@ -20,25 +20,25 @@ public class SupplierEventListener {
         this.emailService = emailService;
     }
 
-    @RabbitListener(queues = "supplierQueue")
-    public void handleSupplierCreated(SupplierCreatedEvent event) {
-        try {
-            log.info("Received supplier created event for: {}", event.getEmail());
-            
-            // 1. Create user in Auth DB
-            String password = authService.createSupplierUser(
-                    event.getEmail(),
-                    event.getName(),
-                    "SUPPLIER"
-            );
-
-            // 2. Send email with credentials
-            emailService.sendSupplierCredentials(event.getEmail(), event.getName(), password);
-            
-            log.info("Successfully processed supplier created event for: {}", event.getEmail());
-        } catch (Exception e) {
-            log.error("Failed to process supplier created event for: {}", event.getEmail(), e);
-            // Consider implementing retry mechanism or dead letter queue
-        }
-    }
+//    @RabbitListener(queues = "supplierQueue")
+//    public void handleSupplierCreated(SupplierCreatedEvent event) {
+//        try {
+//            log.info("Received supplier created event for: {}", event.getEmail());
+//
+//            // 1. Create user in Auth DB
+//            String password = authService.createSupplierUser(
+//                    event.getEmail(),
+//                    event.getName(),
+//                    "SUPPLIER"
+//            );
+//
+//            // 2. Send email with credentials
+//            emailService.sendSupplierCredentials(event.getEmail(), event.getName(), password);
+//
+//            log.info("Successfully processed supplier created event for: {}", event.getEmail());
+//        } catch (Exception e) {
+//            log.error("Failed to process supplier created event for: {}", event.getEmail(), e);
+//            // Consider implementing retry mechanism or dead letter queue
+//        }
+//    }
 }
