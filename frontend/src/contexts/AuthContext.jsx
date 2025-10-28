@@ -6,11 +6,15 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
 
-  const login = (email, password) => {
+  const login = (email, password, userType = 'customer') => {
     // Mock login logic - in real app, this would call an API
     if (email && password) {
       setIsAuthenticated(true);
-      setUser({ email, name: 'Demo User' });
+      setUser({ 
+        email, 
+        name: 'Demo User',
+        userType: userType 
+      });
       return true;
     }
     return false;
@@ -21,11 +25,17 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  const register = (email, password, name) => {
-    // Mock registration logic
+  const register = (email, password, name, documents) => {
+    // Mock registration logic - accept optional documents array
     if (email && password && name) {
       setIsAuthenticated(true);
-      setUser({ email, name });
+      setUser({
+        email,
+        name,
+        documents: Array.isArray(documents)
+          ? documents.map((f) => ({ name: f.name, type: f.type, size: f.size }))
+          : []
+      });
       return true;
     }
     return false;

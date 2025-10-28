@@ -8,14 +8,15 @@ const Card = ({
     ...props
 }) => {
 
-    const base = "rounded-2xl shadow-md transition border bg-white overflow-hidden";
+    const base = "rounded-2xl shadow-md transition border overflow-hidden";
 
     const variants = {
-        default: "border-gray-200 hover:shadow-lg",
-        outline: "border-2 border-green-500 hover:shadow-lg",
-        elevated: "shadow-lg hover:shadow-xl",
-        subtle: "bg-gray-50 border-gray-100",
-        dark: "bg-gray-900 text-white border-gray-800",
+      default: "bg-white border-gray-200 hover:shadow-lg",
+      outline: "bg-white border-2 border-green-500 hover:shadow-lg",
+      elevated: "bg-white shadow-lg hover:shadow-xl",
+      subtle: "bg-gray-50 border-gray-100",
+      dark: "bg-gray-900 text-white border-gray-800 hover:shadow-xl",
+      transparent: "bg-transparent border-transparent hover:shadow-none",
     };
 
     const sizes = {

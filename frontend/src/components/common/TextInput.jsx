@@ -17,10 +17,11 @@ const TextInput = ({
 
   
   const variants = {
-    default: "border-gray-300 focus:ring-green-500 focus:border-green-500 bg-white",
-    outline: "border-2 border-green-500 focus:ring-green-600 focus:border-green-600 bg-white",
-    filled: "bg-gray-100 border-gray-200 focus:bg-white focus:ring-green-500 focus:border-green-500",
-    error: "border-red-500 focus:ring-red-500 focus:border-red-500 bg-white",
+    default: "border-gray-300 focus:ring-green-500 focus:border-green-500 bg-white text-gray-900 placeholder-gray-500",
+    outline: "border-2 border-green-500 focus:ring-green-600 focus:border-green-600 bg-white text-gray-900 placeholder-gray-500",
+    filled: "bg-gray-100 border-gray-200 focus:bg-white focus:ring-green-500 focus:border-green-500 text-gray-900 placeholder-gray-600",
+    error: "border-red-500 focus:ring-red-500 focus:border-red-500 bg-white text-gray-900 placeholder-gray-500",
+    dark: "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-emerald-500 focus:border-emerald-500",
   };
 
   
@@ -41,7 +42,7 @@ const TextInput = ({
       {label && (
         <label
           htmlFor={props.id}
-          className="text-sm font-medium text-gray-700"
+          className={`text-sm font-medium ${variant === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}
         >
           {label}
         </label>

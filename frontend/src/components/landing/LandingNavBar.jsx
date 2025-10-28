@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Menu, X, Kanban} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../common';
 
 const LandingNavBar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navigationItems = [
     { href: "#features", label: "Features" },
@@ -42,10 +44,20 @@ const LandingNavBar = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="secondary" size="sm" className="text-gray-400 hover:text-white">
+            <Button 
+              variant="secondary" 
+              size="sm" 
+              className="text-gray-400 hover:text-white"
+              onClick={() => navigate('/login')}
+            >
               Login
             </Button>
-            <Button variant="primary" size="sm" className="bg-emerald-500 hover:bg-emerald-600">
+            <Button 
+              variant="primary" 
+              size="sm" 
+              className="bg-emerald-500 hover:bg-emerald-600"
+              onClick={() => navigate('/register')}
+            >
               Register
             </Button>
           </div>
@@ -75,10 +87,26 @@ const LandingNavBar = () => {
               </a>
             ))}
             <div className="pt-4 border-t border-gray-800 space-y-2">
-              <Button variant="ghost" size="sm" className="w-full text-gray-400 hover:text-white">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="w-full text-gray-400 hover:text-white"
+                onClick={() => {
+                  navigate('/login');
+                  setMobileMenuOpen(false);
+                }}
+              >
                 Login
               </Button>
-              <Button variant="primary" size="sm" className="w-full bg-emerald-500 hover:bg-emerald-600">
+              <Button 
+                variant="primary" 
+                size="sm" 
+                className="w-full bg-emerald-500 hover:bg-emerald-600"
+                onClick={() => {
+                  navigate('/register');
+                  setMobileMenuOpen(false);
+                }}
+              >
                 Register
               </Button>
             </div>
