@@ -1,36 +1,26 @@
-import { useNavigate } from 'react-router-dom';
-import Button from '../common/Button';
+import React from 'react';
+import { Button } from '../common';
 
-export default function CTASection() {
-  const navigate = useNavigate();
-
-  const handleStartTrialClick = () => {
-    navigate('/register');
-  };
-
-  const handleScheduleDemoClick = () => {
-    // You can implement demo scheduling functionality here
-    console.log('Schedule Demo clicked');
-  };
-
+const CTASection = () => {
   return (
-    <section className="px-6 py-20 bg-gradient-to-r from-green-600 to-green-500">
-      <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-4xl font-bold text-black mb-6">
-          Ready to Transform Your Supply Chain?
-        </h2>
-        <p className="text-xl text-black opacity-80 mb-8">
-          Join hundreds of companies already using OpenSCM to optimize their operations
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button variant="cta" size="lg" onClick={handleStartTrialClick}>
-            Start Your Free Trial
-          </Button>
-          <Button variant="ctaSecondary" size="lg" onClick={handleScheduleDemoClick}>
-            Schedule Demo
+    <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 border border-emerald-500/20 rounded-2xl p-12 text-center">
+          <h2 className="text-4xl font-bold mb-4">Ready to Transform Your Supply Chain?</h2>
+          <p className="text-xl text-gray-400 mb-8">
+            Join thousands of companies already using OpenSCM to optimize their operations
+          </p>
+          <Button 
+            variant="primary" 
+            size="lg" 
+            className="bg-emerald-500 hover:bg-emerald-600 transition-all transform hover:scale-105"
+          >
+            Start Free Trial
           </Button>
         </div>
       </div>
     </section>
   );
-}
+};
+
+export default CTASection;
