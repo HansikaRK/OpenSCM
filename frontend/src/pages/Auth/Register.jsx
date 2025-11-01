@@ -3,11 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import AuthLayout from '../../layouts/AuthLayout';
 import { Button, TextInput, Card } from '../../components/common';
+import { Mail, User, LockKeyhole } from 'lucide-react';
 
 export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [documents, setDocuments] = useState([]);
   const [isSupplier, setIsSupplier] = useState(false);
   const { register } = useAuth();
@@ -70,15 +72,16 @@ export default function Register() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                  Full Name
+                  {isSupplier ? `Supplier / Business Name` : `Name`}
                 </label>
                 <TextInput
                   id="name"
                   type="text"
                   value={name}
+                  leftIcon={<User />}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your full name"
-                  variant="default"
+                  placeholder={isSupplier? `Enter your supplier / business name` : `Enter your full name`}
+                  variant="dark"
                   required
                 />
               </div>
@@ -91,24 +94,42 @@ export default function Register() {
                   id="email"
                   type="email"
                   value={email}
+                  leftIcon={<Mail />}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  variant="default"
+                  variant="dark"
                   required
                 />
               </div>
           
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                 <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
                   Password
                 </label>
                 <TextInput
                   id="password"
                   type="password"
                   value={password}
+                  leftIcon={<LockKeyhole />}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  variant="default"
+                  variant="dark"
+                  required
+                />
+              </div>
+
+              <div>
+                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
+                  Confirm Password
+                </label>
+                <TextInput
+                  id="confirmPassword"
+                  type="password"
+                  value={confirmPassword}
+                  leftIcon={<LockKeyhole />}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Enter your password again"
+                  variant="dark"
                   required
                 />
               </div>
@@ -117,7 +138,7 @@ export default function Register() {
               {isSupplier && (
                 <div>
                   <label htmlFor="documents" className="block text-sm font-medium text-gray-300 mb-2">
-                    Upload documents
+                    Upload business documents
                   </label>
                   <input
                     id="documents"
@@ -125,7 +146,7 @@ export default function Register() {
                     accept=".pdf,.png,.jpg,.jpeg"
                     multiple
                     onChange={(e) => setDocuments(Array.from(e.target.files))}
-                    className="block w-full text-sm text-gray-300 file:bg-emerald-700 file:text-white file:px-3 file:py-2 file:rounded-md"
+                    className="block w-full text-sm text-gray-300 file:bg-green-700 file:text-white file:px-3 file:py-2 file:rounded-md"
                   />
                   {documents.length > 0 && (
                     <div className="mt-2 text-sm text-gray-300">
@@ -153,15 +174,6 @@ export default function Register() {
 
             <div className="text-center space-y-4 mt-3">
               <div className="space-y-2">
-                <Link to="/">
-                  <Button 
-                    variant="secondary" 
-                    size="md" 
-                    className="w-full bg-gray-800 hover:bg-gray-700"
-                  >
-                    Back to Home
-                  </Button>
-                </Link>
                  <p className="text-sm text-gray-300 mt-2">
                   Already have an account?{' '}
                   <Link to="/login" className="text-emerald-500 hover:underline">

@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import AuthLayout from '../../layouts/AuthLayout';
 import { Button, TextInput, Card } from '../../components/common';
+import { Mail, LockKeyhole } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -43,9 +44,10 @@ export default function Login() {
                   id="email"
                   type="email"
                   value={email}
+                  leftIcon={<Mail />}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  variant="default"
+                  variant="dark"
                   required
                 />
               </div>
@@ -58,9 +60,10 @@ export default function Login() {
                   id="password"
                   type="password"
                   value={password}
+                  leftIcon={<LockKeyhole />}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  variant="default"
+                  variant="dark"
                   required
                 />
               </div>
@@ -73,7 +76,7 @@ export default function Login() {
                   id="userType"
                   value={userType}
                   onChange={(e) => setUserType(e.target.value)}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 bg-white text-gray-900"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 bg-gray-900 text-white"
                   required
                 >
                   <option value="customer">Customer</option>
@@ -94,15 +97,6 @@ export default function Login() {
 
             <div className="text-center space-y-4 mt-3">
               <div className="space-y-2">
-                <Link to="/">
-                  <Button
-                    variant="secondary"
-                    size="md"
-                    className="w-full bg-gray-800 hover:bg-gray-700"
-                  >
-                    Back to Home
-                  </Button>
-                </Link>
                 <p className="text-sm text-gray-300 mt-3">
                   Don't have an account?{' '}
                   <Link to="/register" className="text-emerald-500 hover:underline">

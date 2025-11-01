@@ -15,7 +15,7 @@ const LandingNavBar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 w-full bg-black/95 backdrop-blur-md border-b border-emerald-700/10 shadow-[0_4px_30px_rgba(16,185,129,0.1)] z-50">
+    <nav className="fixed top-0 w-full bg-gray-950/90 backdrop-blur-md border-b border-emerald-700/10 shadow-[0_4px_30px_rgba(16,185,129,0.1)] z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}

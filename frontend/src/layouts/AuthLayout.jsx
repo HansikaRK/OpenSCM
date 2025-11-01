@@ -3,7 +3,7 @@ import AuthNavBar from '../components/common/AuthNavBar';
 
 const AuthLayout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-gray-950 text-white">
       <AuthNavBar />
       <main>
         {children}

@@ -3,7 +3,7 @@ import { LandingNavBar, Footer } from '../components/landing';
 
 const LandingLayout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-gray-950 text-white">
       <LandingNavBar />
       <main>
         {children}
