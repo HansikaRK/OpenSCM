@@ -21,7 +21,7 @@ const TextInput = ({
     outline: "border-2 border-green-500 focus:ring-green-600 focus:border-green-600 bg-white text-gray-900 placeholder-gray-500",
     filled: "bg-gray-100 border-gray-200 focus:bg-white focus:ring-green-500 focus:border-green-500 text-gray-900 placeholder-gray-600",
     error: "border-red-500 focus:ring-red-500 focus:border-red-500 bg-white text-gray-900 placeholder-gray-500",
-    dark: "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-emerald-500 focus:border-emerald-500",
+    dark: "bg-gray-800 border-gray-800 text-white placeholder-gray-400 focus:ring-green-600 focus:border-emerald-500",
   };
 
   
